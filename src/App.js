@@ -60,61 +60,69 @@ function App() {
   };
 
   return (
-    <div>
-      {isWinner && (
-        <div style={{ alignText: "center" }}>
-          <h1>You Win!</h1>
-          <iframe
-            width="100%"
-            height="315"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ?&autoplay=1"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-          <button onClick={resetGame} style={{ fontSize: 30 }}>
-            Play Again
+    <div
+      style={{
+        position: "relative"
+      }}
+    >
+      <div>
+        {isWinner && (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              textAlign: "center",
+              background: "#ECECEC"
+            }}
+          >
+            <h1>You Win!</h1>
+            <button onClick={resetGame} style={{ fontSize: 30 }}>
+              Play Again
+            </button>
+          </div>
+        )}
+        <div
+          style={{ textAlign: "right", margin: 5, fontSize: 20 }}
+        >{`Guesses: ${guesses.length + wordGuesses.length}`}</div>
+        <div
+          style={{ fontFamily: "monospace", fontSize: 30, textAlign: "center" }}
+        >
+          {getPrompt()}
+        </div>
+        <div
+          onClick={handleLetter}
+          style={{ textAlign: "center", margin: "50px 10px 50px 10px" }}
+        >
+          {alphabet &&
+            alphabet.lower.map(letter => {
+              return (
+                <button
+                  disabled={guesses.includes(letter) ? true : false}
+                  data-letter={letter}
+                  style={{ padding: 10, margin: 2, fontSize: 50 }}
+                >
+                  {letter}
+                </button>
+              );
+            })}
+        </div>
+        <div style={{ textAlign: "center" }}>
+          <div>
+            <input
+              type="text"
+              ref={guessRef}
+              maxLength={word.length}
+              style={{ fontSize: 30, margin: 5 }}
+              onKeyDown={handleEnter}
+            />
+          </div>
+          <button onClick={handleGuessWord} style={{ fontSize: 30 }}>
+            Guess Word
           </button>
         </div>
-      )}
-      <div
-        style={{ textAlign: "right", margin: 5, fontSize: 20 }}
-      >{`Guesses: ${guesses.length + wordGuesses.length}`}</div>
-      <div
-        style={{ fontFamily: "monospace", fontSize: 30, textAlign: "center" }}
-      >
-        {getPrompt()}
-      </div>
-      <div
-        onClick={handleLetter}
-        style={{ textAlign: "center", margin: "50px 10px 50px 10px" }}
-      >
-        {alphabet &&
-          alphabet.lower.map(letter => {
-            return (
-              <button
-                disabled={guesses.includes(letter) ? true : false}
-                data-letter={letter}
-                style={{ padding: 10, margin: 2, fontSize: 50 }}
-              >
-                {letter}
-              </button>
-            );
-          })}
-      </div>
-      <div style={{ textAlign: "center" }}>
-        <div>
-          <input
-            type="text"
-            ref={guessRef}
-            maxLength={word.length}
-            style={{ fontSize: 30, margin: 5 }}
-            onKeyDown={handleEnter}
-          />
-        </div>
-        <button onClick={handleGuessWord} style={{ fontSize: 30 }}>
-          Guess Word
-        </button>
       </div>
     </div>
   );
