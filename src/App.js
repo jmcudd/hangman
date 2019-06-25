@@ -7,6 +7,13 @@ function App() {
   const [guesses, setGuesses] = useState([]);
   const [wordGuesses, setWordGuesses] = useState([]);
   const [isWinner, setIsWinner] = useState(false);
+
+  const resetGame = () => {
+    setWord(randomWords());
+    setGuesses([]);
+    setWordGuesses([]);
+    setIsWinner(false);
+  };
   const guessRef = useRef(null);
 
   const handleEnter = e => {
@@ -17,7 +24,7 @@ function App() {
   const handleGuessWord = () => {
     const guess = guessRef.current.value;
     setWordGuesses(wordGuesses.concat([guess]));
-    if (guess === word) {
+    if (guess.toLowerCase() === word) {
       setIsWinner(true);
     }
     guessRef.current.value = "";
@@ -54,8 +61,9 @@ function App() {
 
   return (
     <div>
-      <div>
-        {isWinner && (
+      {isWinner && (
+        <div style={{ alignText: "center" }}>
+          <h1>You Win!</h1>
           <iframe
             width="100%"
             height="315"
@@ -64,8 +72,11 @@ function App() {
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
-        )}
-      </div>
+          <button onClick={resetGame} style={{ fontSize: 30 }}>
+            Play Again
+          </button>
+        </div>
+      )}
       <div
         style={{ textAlign: "right", margin: 5, fontSize: 20 }}
       >{`Guesses: ${guesses.length + wordGuesses.length}`}</div>
@@ -74,14 +85,17 @@ function App() {
       >
         {getPrompt()}
       </div>
-      <div onClick={handleLetter} style={{ margin: "50px 10px 50px 10px" }}>
+      <div
+        onClick={handleLetter}
+        style={{ textAlign: "center", margin: "50px 10px 50px 10px" }}
+      >
         {alphabet &&
           alphabet.lower.map(letter => {
             return (
               <button
                 disabled={guesses.includes(letter) ? true : false}
                 data-letter={letter}
-                style={{ padding: 5, margin: 2, fontSize: 30 }}
+                style={{ padding: 10, margin: 2, fontSize: 50 }}
               >
                 {letter}
               </button>
